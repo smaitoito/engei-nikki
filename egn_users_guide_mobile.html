@@ -1,0 +1,997 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>演芸日記 使い方ガイド（モバイル版）v2.0</title>
+  <style>
+    :root {
+      --orange:      #f57c1a;
+      --orange-soft: #fff5eb;
+      --orange-mid:  #fde3c4;
+      --ink:         #1f2937;
+      --ink-soft:    #6b7280;
+      --bg:          #f3f4f6;
+      --white:       #ffffff;
+      --border:      #e5e7eb;
+      --star:        #f59e0b;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: "Hiragino Sans", "Hiragino Kaku Gothic ProN", "YuGothic", sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      line-height: 1.6;
+    }
+
+    /* ── COVER ─────────────────────────────── */
+    .cover {
+      background: var(--orange);
+      color: white;
+      text-align: center;
+      padding: 52px 24px 44px;
+    }
+    .cover .tag {
+      display: inline-block;
+      background: rgba(255,255,255,.22);
+      border-radius: 20px;
+      padding: 4px 14px;
+      font-size: 11px;
+      letter-spacing: .08em;
+      margin-bottom: 18px;
+    }
+    .cover h1 { font-size: 26px; font-weight: 800; margin-bottom: 8px; }
+    .cover p  { font-size: 13px; opacity: .88; max-width: 400px; margin: 0 auto 28px; }
+    .cover .meta { font-size: 10px; opacity: .7; }
+
+    /* ── BOTTOM NAV ILLUST ── */
+    .nav-illust {
+      display: flex;
+      background: white;
+      border-radius: 16px;
+      max-width: 320px;
+      margin: 0 auto 28px;
+      padding: 10px 0 8px;
+      box-shadow: 0 4px 16px rgba(0,0,0,.15);
+    }
+    .ni-tab {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
+      font-size: 9px;
+      color: var(--ink-soft);
+    }
+    .ni-tab .ni-icon { font-size: 18px; }
+    .ni-tab.center .ni-icon {
+      width: 42px; height: 42px;
+      background: var(--orange);
+      border-radius: 50%;
+      margin-top: -18px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 20px;
+      box-shadow: 0 2px 8px rgba(245,124,26,.4);
+    }
+    .ni-tab.center { color: var(--orange); }
+
+    /* ── TOC ─────────────────────────────── */
+    .toc {
+      background: white;
+      margin: 20px 16px;
+      border-radius: 16px;
+      padding: 20px;
+      box-shadow: 0 1px 4px rgba(0,0,0,.06);
+    }
+    .toc h2 { font-size: 12px; color: var(--ink-soft); letter-spacing: .08em; margin-bottom: 14px; }
+    .toc-list { list-style: none; }
+    .toc-list li { border-bottom: 1px solid var(--border); }
+    .toc-list li:last-child { border-bottom: none; }
+    .toc-list a {
+      display: flex; align-items: center; gap: 10px;
+      padding: 10px 0;
+      text-decoration: none; color: var(--ink); font-size: 13px;
+    }
+    .toc-list a:hover { color: var(--orange); }
+    .toc-icon {
+      width: 28px; height: 28px;
+      background: var(--orange-soft);
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 14px; flex-shrink: 0;
+    }
+
+    /* ── SECTION ─────────────────────────── */
+    .guide { margin: 0 0 28px; padding: 0 16px; }
+
+    .section-header {
+      display: flex; align-items: center; gap: 12px;
+      margin-bottom: 18px; padding-top: 4px;
+    }
+    .sh-icon {
+      width: 44px; height: 44px;
+      background: var(--orange); border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 22px; color: white; flex-shrink: 0;
+    }
+    .sh-text h2 { font-size: 19px; font-weight: 800; }
+    .sh-text p  { font-size: 11px; color: var(--ink-soft); }
+
+    /* ── PHONE MOCKUP ──────────────────────── */
+    .phone-wrap { display: flex; justify-content: center; margin: 16px 0; }
+    .phone {
+      width: 294px;
+      background: white;
+      border-radius: 22px;
+      border: 2px solid #d1d5db;
+      box-shadow: 0 6px 24px rgba(0,0,0,.12);
+      overflow: hidden;
+    }
+    .phone-header {
+      padding: 11px 14px 9px;
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center;
+    }
+    .ph-logo { color: var(--orange); font-weight: 800; font-size: 15px; }
+    .ph-actions { margin-left: auto; display: flex; gap: 6px; align-items: center; }
+    .ph-btn {
+      background: var(--orange); color: white;
+      border-radius: 6px; padding: 3px 9px;
+      font-size: 10px; font-weight: 700;
+    }
+    .phone-body { padding: 13px; min-height: 280px; font-size: 11px; }
+
+    .phone-nav {
+      display: flex;
+      border-top: 1px solid var(--border);
+      background: white;
+      padding: 5px 0 7px;
+    }
+    .pn-tab {
+      flex: 1;
+      display: flex; flex-direction: column; align-items: center; gap: 2px;
+      font-size: 8px; color: var(--ink-soft);
+    }
+    .pn-tab .pni { font-size: 15px; }
+    .pn-tab.active { color: var(--orange); }
+    .pn-tab.camera { margin-top: -16px; }
+    .pn-tab.camera .pni {
+      width: 38px; height: 38px;
+      background: var(--orange); border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 17px; color: white;
+      box-shadow: 0 2px 8px rgba(245,124,26,.4);
+    }
+    .pn-tab.camera { color: var(--orange); }
+
+    /* ── IN-PHONE PARTS ── */
+    .ph-title { font-size: 15px; font-weight: 800; margin-bottom: 3px; }
+    .ph-sub   { font-size: 9px; color: var(--ink-soft); margin-bottom: 10px; }
+
+    .mini-cal { border: 1px solid var(--border); border-radius: 7px; overflow: hidden; margin-bottom: 10px; }
+    .mini-cal-head {
+      background: var(--orange-soft); padding: 5px 9px;
+      font-size: 10px; font-weight: 700;
+      display: flex; justify-content: space-between;
+    }
+    .mc-grid { display: grid; grid-template-columns: repeat(7,1fr); }
+    .mc-d { text-align: center; padding: 3px 1px; font-size: 8px; }
+    .mc-d.h { color: var(--ink-soft); font-weight: 700; }
+    .mc-d.today { background: var(--orange); color: white; border-radius: 3px; font-weight: 700; }
+    .mc-d.ev { color: var(--orange); font-weight: 700; }
+
+    .ev-card {
+      border-left: 3px solid var(--orange);
+      background: var(--orange-soft);
+      border-radius: 0 7px 7px 0;
+      padding: 7px 9px; margin-bottom: 7px; font-size: 10px;
+    }
+    .ev-card.fav { border-left-color: var(--star); background: #fffbeb; }
+    .ev-card .ev-date  { font-size: 9px; color: var(--ink-soft); }
+    .ev-card .ev-title { font-weight: 700; font-size: 11px; margin: 2px 0; }
+    .ev-card .ev-venue { font-size: 9px; color: var(--ink-soft); }
+
+    .filter-bar { display: flex; gap: 3px; flex-wrap: wrap; margin-bottom: 9px; }
+    .fb-chip {
+      border: 1px solid var(--border); border-radius: 10px;
+      padding: 2px 7px; font-size: 8px; color: var(--ink-soft); background: white;
+    }
+    .fb-chip.on { background: var(--orange-soft); border-color: var(--orange); color: var(--orange); font-weight: 700; }
+
+    .upload-area {
+      border: 2px dashed var(--orange-mid); border-radius: 9px;
+      padding: 14px; text-align: center; background: var(--orange-soft); margin-bottom: 9px;
+    }
+    .ua-icon { font-size: 22px; margin-bottom: 5px; }
+    .ua-text { font-size: 9px; color: var(--ink-soft); }
+    .ua-btn {
+      display: inline-block; background: var(--orange); color: white;
+      border-radius: 6px; padding: 4px 11px; font-size: 10px; font-weight: 700; margin-top: 7px;
+    }
+
+    .fl { display: flex; gap: 5px; }
+    .ph-label { font-size: 8px; color: var(--ink-soft); margin-bottom: 2px; }
+    .ph-field {
+      background: #f9fafb; border: 1px solid var(--border); border-radius: 5px;
+      padding: 5px 7px; font-size: 10px; color: var(--ink); width: 100%; margin-bottom: 6px;
+    }
+    .ph-field.v { background: white; font-weight: 700; }
+    .ph-save {
+      display: block; background: var(--orange); color: white;
+      text-align: center; border-radius: 7px; padding: 7px;
+      font-size: 11px; font-weight: 700; margin-top: 8px;
+    }
+
+    .map-box {
+      background: #dce8dc; border-radius: 7px; height: 100px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 26px; margin-bottom: 9px;
+    }
+    .venue-card {
+      border: 1px solid var(--border); border-radius: 7px;
+      padding: 9px; font-size: 10px; margin-bottom: 5px;
+    }
+    .vc-name { font-weight: 700; font-size: 11px; margin-bottom: 1px; }
+    .vc-addr { font-size: 9px; color: var(--ink-soft); }
+
+    .profile-row {
+      display: flex; align-items: center; gap: 9px;
+      border: 1px solid var(--border); border-radius: 9px;
+      padding: 9px; margin-bottom: 9px;
+    }
+    .p-avatar {
+      width: 34px; height: 34px; background: var(--orange-soft); border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 800; color: var(--orange); font-size: 13px; flex-shrink: 0;
+    }
+    .p-name  { font-weight: 700; font-size: 11px; }
+    .p-email { font-size: 9px; color: var(--ink-soft); }
+
+    .acct-menu { list-style: none; }
+    .acct-menu li {
+      border-bottom: 1px solid var(--border);
+      padding: 9px 0; font-size: 11px;
+      display: flex; align-items: center; gap: 7px;
+    }
+    .acct-menu li:last-child { border-bottom: none; color: #ef4444; }
+
+    .genre-row { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 7px; }
+    .g-chip {
+      border: 1px solid var(--border); border-radius: 10px;
+      padding: 2px 9px; font-size: 9px; background: white;
+    }
+    .g-chip.on { background: var(--orange-soft); border-color: var(--orange); color: var(--orange); font-weight: 700; }
+
+    /* ── EXP CARD ──────────────────────────── */
+    .exp-card {
+      background: white; border-radius: 13px; padding: 16px;
+      box-shadow: 0 1px 4px rgba(0,0,0,.06); margin-bottom: 14px;
+    }
+    .exp-card h3 { font-size: 14px; font-weight: 800; margin-bottom: 10px; }
+
+    /* ── STEP LIST ─────────────────────────── */
+    .steps { list-style: none; counter-reset: s; }
+    .steps li {
+      counter-increment: s;
+      display: flex; gap: 10px;
+      margin-bottom: 9px; font-size: 12px; line-height: 1.55;
+    }
+    .steps li::before {
+      content: counter(s);
+      flex-shrink: 0; width: 21px; height: 21px;
+      background: var(--orange); color: white; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 10px; font-weight: 700; margin-top: 1px;
+    }
+
+    /* ── CALLOUT ───────────────────────────── */
+    .callout {
+      background: var(--orange-soft);
+      border-left: 4px solid var(--orange);
+      border-radius: 0 9px 9px 0;
+      padding: 11px 13px; font-size: 12px; margin: 10px 0; line-height: 1.6;
+    }
+    .callout strong { color: var(--orange); }
+
+    /* ── BADGE ─────────────────────────────── */
+    .badge {
+      display: inline-block; background: var(--orange); color: white;
+      border-radius: 5px; padding: 2px 9px; font-size: 10px; font-weight: 700;
+      letter-spacing: .06em; margin-bottom: 5px;
+    }
+
+    .divider { border: none; border-top: 2px solid var(--border); margin: 28px 0; }
+
+    /* ── REGISTER SECTION ─────────────────── */
+    .reg-section {
+      background: white; margin: 0 16px 28px;
+      border-radius: 16px; padding: 22px;
+      box-shadow: 0 1px 4px rgba(0,0,0,.06);
+    }
+    .reg-section h2 { font-size: 19px; font-weight: 800; margin-bottom: 5px; }
+    .reg-sub { font-size: 12px; color: var(--ink-soft); margin-bottom: 18px; line-height: 1.65; }
+
+    .step-title {
+      font-size: 13px; font-weight: 800; margin: 16px 0 9px;
+      padding-left: 9px; border-left: 3px solid var(--orange);
+    }
+
+    .form-card {
+      background: white; border: 1px solid var(--border); border-radius: 11px;
+      padding: 14px; margin-bottom: 11px;
+    }
+    .form-card h5 { font-size: 14px; font-weight: 800; margin-bottom: 5px; }
+    .fc-desc { font-size: 11px; color: var(--ink-soft); margin-bottom: 11px; }
+    .fc-lbl  { font-size: 10px; color: var(--ink-soft); margin: 7px 0 3px; }
+    .fc-inp  {
+      background: #f3f4f6; border: 1px solid var(--border); border-radius: 5px;
+      padding: 6px 9px; font-size: 12px; width: 100%;
+    }
+    .fc-inp.v { background: white; font-weight: 700; color: var(--ink); }
+    .fc-btn  {
+      display: block; background: var(--orange); color: white;
+      text-align: center; border-radius: 7px; padding: 9px;
+      font-size: 12px; font-weight: 700; margin-top: 11px;
+    }
+    .fc-alt  { text-align: center; margin-top: 9px; font-size: 11px; color: var(--ink-soft); }
+    .fc-alt a { color: var(--orange); font-weight: 700; text-decoration: none; }
+
+    code {
+      background: #f3f4f6; border-radius: 3px;
+      padding: 1px 5px; font-family: monospace; font-size: 11px;
+    }
+
+    /* ── FOOTER ─────────────────────────────── */
+    footer {
+      text-align: center; padding: 36px 20px;
+      font-size: 10px; color: var(--ink-soft);
+      border-top: 1px solid var(--border);
+      line-height: 1.9;
+    }
+
+    @media (min-width: 600px) {
+      .guide, .reg-section, .toc { margin-left: 24px; margin-right: 24px; }
+      .guide { padding: 0; }
+      .phone { width: 310px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ======== COVER ======== -->
+<div class="cover">
+  <div class="tag">MOBILE GUIDE　v2.0</div>
+  <h1>演芸日記<br>使い方ガイド</h1>
+  <p>スマートフォンで使う演芸記録アプリの操作ガイドです。チラシを撮るだけで寄席日記を自動入力する方法も解説します。</p>
+  <div class="nav-illust">
+    <div class="ni-tab"><div class="ni-icon">🏠</div>今日</div>
+    <div class="ni-tab"><div class="ni-icon">📋</div>演芸会</div>
+    <div class="ni-tab center"><div class="ni-icon">📷</div>チラシ</div>
+    <div class="ni-tab"><div class="ni-icon">📍</div>会場</div>
+    <div class="ni-tab"><div class="ni-icon">👤</div>アカウント</div>
+  </div>
+  <div class="meta">egn.our-map.jp　／　実画面スクリーンショットをもとに作成（2026年5月）</div>
+</div>
+
+<!-- ======== TOC ======== -->
+<div class="toc">
+  <h2>もくじ</h2>
+  <ul class="toc-list">
+    <li><a href="#today"><span class="toc-icon">🏠</span>今日どうする？（トップ画面）</a></li>
+    <li><a href="#memories"><span class="toc-icon">📋</span>演芸会（記録一覧）</a></li>
+    <li><a href="#chirashi"><span class="toc-icon">📷</span>チラシ取り込み</a></li>
+    <li><a href="#venues"><span class="toc-icon">📍</span>会場</a></li>
+    <li><a href="#account"><span class="toc-icon">👤</span>アカウント・プロフィール</a></li>
+    <li><a href="#register"><span class="toc-icon">✉️</span>新規登録（STEP 1〜6）</a></li>
+  </ul>
+</div>
+
+<!-- ======== SEC 1: TODAY ======== -->
+<section id="today" class="guide">
+  <div class="section-header">
+    <div class="sh-icon">🏠</div>
+    <div class="sh-text">
+      <h2>今日どうする？</h2>
+      <p>egn.our-map.jp　／　ボトムナビ「今日」</p>
+    </div>
+  </div>
+
+  <div class="phone-wrap">
+    <div class="phone">
+      <div class="phone-header"><span class="ph-logo">演芸日記</span></div>
+      <div class="phone-body">
+        <div class="ph-title" style="font-size:17px;">演芸日記</div>
+        <div class="ph-sub">今日の予定を確認しましょう</div>
+
+        <div class="mini-cal">
+          <div class="mini-cal-head"><span>◀</span><span>2026年5月</span><span>▶</span></div>
+          <div class="mc-grid">
+            <div class="mc-d h">日</div><div class="mc-d h">月</div><div class="mc-d h">火</div>
+            <div class="mc-d h">水</div><div class="mc-d h">木</div><div class="mc-d h">金</div><div class="mc-d h">土</div>
+            <div class="mc-d"></div><div class="mc-d"></div><div class="mc-d"></div>
+            <div class="mc-d"></div><div class="mc-d ev">1</div><div class="mc-d today">2</div><div class="mc-d">3</div>
+            <div class="mc-d">4</div><div class="mc-d">5</div><div class="mc-d">6</div>
+            <div class="mc-d">7</div><div class="mc-d">8</div><div class="mc-d">9</div><div class="mc-d ev">10</div>
+          </div>
+        </div>
+
+        <div class="ev-card fav">
+          <div class="ev-date">★ 2026-05-10</div>
+          <div class="ev-title">池袋夜間飛行 第22便 豊島区感謝特別便</div>
+          <div class="ev-venue">📍 自由学園明日館 講堂</div>
+        </div>
+        <div class="ev-card fav">
+          <div class="ev-date">★ 2026-04-28</div>
+          <div class="ev-title">諸国漫遊「海外ドラマの日」</div>
+          <div class="ev-venue">📍 日本演曲協会 広間</div>
+        </div>
+      </div>
+      <div class="phone-nav">
+        <div class="pn-tab active"><div class="pni">🏠</div>今日</div>
+        <div class="pn-tab"><div class="pni">📋</div>演芸会</div>
+        <div class="pn-tab camera"><div class="pni">📷</div>チラシ</div>
+        <div class="pn-tab"><div class="pni">📍</div>会場</div>
+        <div class="pn-tab"><div class="pni">👤</div>アカウント</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="exp-card">
+    <h3>📖 この画面でできること</h3>
+    <ul class="steps">
+      <li>カレンダーで今月の演芸会スケジュールを一目確認。オレンジの日付はイベントが登録されている日です。</li>
+      <li>カレンダー下に直近の演芸会一覧が表示されます。★マーク付きは主催者がお知らせしている公演です。</li>
+      <li>地図セクションでは周辺の会場位置を確認できます。</li>
+    </ul>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ======== SEC 2: MEMORIES ======== -->
+<section id="memories" class="guide">
+  <div class="section-header">
+    <div class="sh-icon">📋</div>
+    <div class="sh-text">
+      <h2>演芸会（記録一覧）</h2>
+      <p>egn.our-map.jp/memories　／　ボトムナビ「演芸会」</p>
+    </div>
+  </div>
+
+  <div class="phone-wrap">
+    <div class="phone">
+      <div class="phone-header">
+        <span class="ph-logo">演芸日記</span>
+        <div class="ph-actions"><span class="ph-btn">＋ 新規登録</span></div>
+      </div>
+      <div class="phone-body">
+        <div class="ph-title">演芸会</div>
+        <div class="ph-sub">自分だけの思い出をまとめましょう。</div>
+
+        <div class="filter-bar">
+          <span class="fb-chip">並び基準</span>
+          <span class="fb-chip on">開催日</span>
+          <span class="fb-chip">並び順</span>
+          <span class="fb-chip">障碍</span>
+          <span class="fb-chip">予約済みのみ</span>
+          <span class="fb-chip">行く予定</span>
+          <span class="fb-chip">すべて</span>
+        </div>
+
+        <div class="ev-card fav">
+          <div class="ev-date">★ 2026-05-10</div>
+          <div class="ev-title">池袋夜間飛行 第22便 豊島区感謝特別便</div>
+          <div class="ev-venue">📍 自由学園明日館 講堂</div>
+        </div>
+        <div class="ev-card fav">
+          <div class="ev-date">★ 2026-04-28</div>
+          <div class="ev-title">諸国漫遊「海外ドラマの日」</div>
+          <div class="ev-venue">📍 日本演曲協会 広間</div>
+        </div>
+        <div class="ev-card">
+          <div class="ev-date">□ 未予約　2026-02-20</div>
+          <div class="ev-title">兜町 かるた夢 vol.13</div>
+          <div class="ev-venue">📍 アートスペース兜座</div>
+        </div>
+      </div>
+      <div class="phone-nav">
+        <div class="pn-tab"><div class="pni">🏠</div>今日</div>
+        <div class="pn-tab active"><div class="pni">📋</div>演芸会</div>
+        <div class="pn-tab camera"><div class="pni">📷</div>チラシ</div>
+        <div class="pn-tab"><div class="pni">📍</div>会場</div>
+        <div class="pn-tab"><div class="pni">👤</div>アカウント</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="exp-card">
+    <h3>📖 この画面でできること</h3>
+    <ul class="steps">
+      <li>自分が登録した演芸会・寄席の一覧が表示されます。★マーク付きは主催者がお知らせしている公演です。</li>
+      <li>フィルター（並び基準・開催日・並び順・障碍・予約済みのみ・行く予定・すべて）で絞り込み表示ができます。</li>
+      <li>右上の <strong>「＋ 新規登録」</strong> ボタンから手入力で新しい記録を追加できます。</li>
+      <li>各カードをタップすると詳細・編集画面に移動します。</li>
+    </ul>
+    <div class="callout">
+      <strong>チラシから自動入力するなら：</strong>ボトムナビ中央の「📷 チラシ」ボタンを使うと、PDFや画像を読み込んで日付・会場・金額などを自動入力できます（次のセクション参照）。
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ======== SEC 3: CHIRASHI ======== -->
+<section id="chirashi" class="guide">
+  <div class="section-header">
+    <div class="sh-icon">📷</div>
+    <div class="sh-text">
+      <h2>チラシ取り込み</h2>
+      <p>egn.our-map.jp/memories/import　／　ボトムナビ中央</p>
+    </div>
+  </div>
+
+  <!-- STEP 1 -->
+  <div class="badge">STEP 1</div>
+  <p style="font-size:13px; font-weight:700; margin-bottom:6px;">チラシファイルを選択する</p>
+  <div class="phone-wrap">
+    <div class="phone">
+      <div class="phone-header"><span class="ph-logo">演芸日記</span></div>
+      <div class="phone-body">
+        <div class="ph-title" style="font-size:13px;">チラシ取り込み</div>
+        <div class="ph-sub">チラシの画像やPDFを読み込んで自動入力できます。</div>
+
+        <div class="upload-area">
+          <div class="ua-icon">🎭</div>
+          <div class="ua-text">チラシPDFまたは画像ファイル</div>
+          <div style="font-size:8px; color:var(--ink-soft); margin:4px 0;">ファイルを選択　選択されていません</div>
+          <div class="ua-btn">ファイルを選択</div>
+        </div>
+
+        <div style="background:var(--orange); color:white; text-align:center; border-radius:7px; padding:7px; font-size:11px; font-weight:700;">解析する</div>
+      </div>
+      <div class="phone-nav">
+        <div class="pn-tab"><div class="pni">🏠</div>今日</div>
+        <div class="pn-tab"><div class="pni">📋</div>演芸会</div>
+        <div class="pn-tab camera"><div class="pni">📷</div>チラシ</div>
+        <div class="pn-tab"><div class="pni">📍</div>会場</div>
+        <div class="pn-tab"><div class="pni">👤</div>アカウント</div>
+      </div>
+    </div>
+  </div>
+  <div class="exp-card">
+    <ul class="steps">
+      <li>ボトムナビ中央のオレンジ「📷 チラシ」ボタンをタップして画面を開きます。</li>
+      <li>「ファイルを選択」をタップし、チラシ画像（PNG・JPG）またはPDFを選択します。</li>
+      <li>「解析する」ボタンをタップするとAIが内容を読み取ります。</li>
+    </ul>
+  </div>
+
+  <!-- STEP 2 -->
+  <div class="badge">STEP 2</div>
+  <p style="font-size:13px; font-weight:700; margin-bottom:6px;">チラシを確認して解析する</p>
+  <div class="phone-wrap">
+    <div class="phone">
+      <div class="phone-header"><span class="ph-logo">演芸日記</span></div>
+      <div class="phone-body">
+        <div class="ph-title" style="font-size:13px;">チラシ取り込み</div>
+        <div style="border:1px solid var(--border); border-radius:7px; overflow:hidden; margin-bottom:8px;">
+          <div style="height:100px; background:linear-gradient(135deg,#f3d4b0,#e8a87c); display:flex; align-items:center; justify-content:center; font-size:9px; color:#7a5c3a; font-weight:700; flex-direction:column; gap:3px;">
+            <span style="font-size:24px;">🎭</span>
+            チラシプレビュー
+          </div>
+        </div>
+        <div style="font-size:9px; color:var(--ink-soft); margin-bottom:6px;">チラシ: PDF_20250421.pdf</div>
+        <div style="background:var(--orange); color:white; text-align:center; border-radius:7px; padding:7px; font-size:11px; font-weight:700;">解析する</div>
+      </div>
+      <div class="phone-nav">
+        <div class="pn-tab"><div class="pni">🏠</div>今日</div>
+        <div class="pn-tab"><div class="pni">📋</div>演芸会</div>
+        <div class="pn-tab camera"><div class="pni">📷</div>チラシ</div>
+        <div class="pn-tab"><div class="pni">📍</div>会場</div>
+        <div class="pn-tab"><div class="pni">👤</div>アカウント</div>
+      </div>
+    </div>
+  </div>
+  <div class="exp-card">
+    <ul class="steps">
+      <li>選択したチラシがプレビュー表示されます。内容を確認してから「解析する」をタップします。</li>
+      <li>AIが日付・会場・金額・出演者などの情報を自動抽出し、フォームに入力します。</li>
+    </ul>
+  </div>
+
+  <!-- STEP 3 -->
+  <div class="badge">STEP 3</div>
+  <p style="font-size:13px; font-weight:700; margin-bottom:6px;">寄席日記フォームを確認・修正する（前半）</p>
+  <div class="phone-wrap">
+    <div class="phone">
+      <div class="phone-header">
+        <span class="ph-logo">演芸日記</span>
+        <div class="ph-actions" style="font-size:9px; color:var(--ink-soft);">□ 予約済み</div>
+      </div>
+      <div class="phone-body">
+        <div class="ph-title" style="font-size:13px;">寄席日記（修正フォーム）</div>
+        <div class="ph-sub">自動入力内容を確認・編集してください。</div>
+
+        <div class="ph-label">会の名前</div>
+        <div class="ph-field v" style="margin-bottom:6px;">涙曲＆落語 二人会</div>
+
+        <div class="fl">
+          <div style="flex:1">
+            <div class="ph-label">日付</div>
+            <div class="ph-field v">2026/05/17</div>
+          </div>
+          <div style="flex:1">
+            <div class="ph-label">　</div>
+          </div>
+        </div>
+        <div class="fl">
+          <div style="flex:1">
+            <div class="ph-label">開場時間</div>
+            <div class="ph-field v">13:30</div>
+          </div>
+          <div style="flex:1">
+            <div class="ph-label">開演時間</div>
+            <div class="ph-field v">14:00</div>
+          </div>
+        </div>
+        <div class="fl">
+          <div style="flex:1">
+            <div class="ph-label">予約メール</div>
+            <div class="ph-field" style="font-size:8px;color:var(--ink-soft);">example@…</div>
+          </div>
+          <div style="flex:1">
+            <div class="ph-label">電話番号</div>
+            <div class="ph-field v" style="font-size:9px;">03-6322-1622</div>
+          </div>
+        </div>
+        <div class="ph-label">会場名</div>
+        <div class="ph-field v" style="margin-bottom:6px;">梶原いろは亭</div>
+        <div class="fl">
+          <div style="flex:1">
+            <div class="ph-label">当日金額</div>
+            <div class="ph-field v">2500</div>
+          </div>
+          <div style="flex:1">
+            <div class="ph-label">前売金額</div>
+            <div class="ph-field v">2500</div>
+          </div>
+        </div>
+        <div style="font-size:9px; color:var(--ink-soft);">合計金額（参考）¥2,500</div>
+      </div>
+      <div class="phone-nav">
+        <div class="pn-tab"><div class="pni">🏠</div>今日</div>
+        <div class="pn-tab"><div class="pni">📋</div>演芸会</div>
+        <div class="pn-tab camera"><div class="pni">📷</div>チラシ</div>
+        <div class="pn-tab"><div class="pni">📍</div>会場</div>
+        <div class="pn-tab"><div class="pni">👤</div>アカウント</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 4 -->
+  <div class="badge" style="margin-top:12px;">STEP 4</div>
+  <p style="font-size:13px; font-weight:700; margin-bottom:6px;">感想・出演者を入力して保存する（後半）</p>
+  <div class="phone-wrap">
+    <div class="phone">
+      <div class="phone-header"><span class="ph-logo">演芸日記</span></div>
+      <div class="phone-body">
+        <div class="ph-label">備考</div>
+        <div class="ph-field" style="height:32px; margin-bottom:8px;"></div>
+
+        <div class="ph-label">出演者（1行1人）</div>
+        <div class="ph-field v" style="height:40px; font-size:10px; line-height:1.6;">東家三可子<br>伊丹秀夫</div>
+
+        <div class="ph-label">演目（1行1演目）</div>
+        <div class="ph-field" style="height:32px; font-size:8px; color:var(--ink-soft);">例：芝浜、らくだ</div>
+
+        <div class="ph-label">感想</div>
+        <div class="ph-field" style="height:32px; font-size:8px; color:var(--ink-soft);">印象に残ったこと、また行きたい点など</div>
+
+        <div class="ph-save">保存する</div>
+
+        <div style="margin-top:12px; font-size:10px; font-weight:700;">追加画像（チラシ以外）</div>
+        <div style="font-size:9px; color:var(--ink-soft); margin:3px 0 6px;">画像を追加（複数可）</div>
+        <div style="border:1px dashed var(--border); border-radius:6px; padding:7px; text-align:center; font-size:9px; color:var(--ink-soft);">
+          ファイルを選択　0/5枚<br>まだ追加画像はありません。
+        </div>
+      </div>
+      <div class="phone-nav">
+        <div class="pn-tab"><div class="pni">🏠</div>今日</div>
+        <div class="pn-tab"><div class="pni">📋</div>演芸会</div>
+        <div class="pn-tab camera"><div class="pni">📷</div>チラシ</div>
+        <div class="pn-tab"><div class="pni">📍</div>会場</div>
+        <div class="pn-tab"><div class="pni">👤</div>アカウント</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="exp-card" style="margin-top:12px;">
+    <h3>📝 フォームの全項目</h3>
+    <ul class="steps">
+      <li>自動入力された内容を確認し、誤りがあれば修正します。右上「予約済み」チェックで予約状況を記録できます。</li>
+      <li><strong>出演者</strong>は1行に1名ずつ入力します（自動入力されることもあります）。</li>
+      <li><strong>演目</strong>は1行に1演目ずつ入力（例：芝浜、らくだ）。</li>
+      <li><strong>感想</strong>に観劇後のメモを自由に書けます。</li>
+      <li><strong>追加画像</strong>はチラシ以外の写真（会場・舞台など）を最大5枚追加できます。</li>
+      <li>下部の「<strong>保存する</strong>」をタップして記録完了です。</li>
+    </ul>
+    <div class="callout">
+      <strong>合計金額について：</strong>当日金額と前売金額を入力すると「合計金額（参考）」が自動計算されて表示されます。
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ======== SEC 4: VENUES ======== -->
+<section id="venues" class="guide">
+  <div class="section-header">
+    <div class="sh-icon">📍</div>
+    <div class="sh-text">
+      <h2>会場</h2>
+      <p>egn.our-map.jp/venues　／　ボトムナビ「会場」</p>
+    </div>
+  </div>
+
+  <div class="badge">会場一覧</div>
+  <div class="phone-wrap" style="margin-top:8px;">
+    <div class="phone">
+      <div class="phone-header"><span class="ph-logo">演芸日記</span></div>
+      <div class="phone-body">
+        <div class="ph-title" style="font-size:13px;">会場一覧</div>
+        <div class="ph-sub">近くの会場の場所を確認できます。</div>
+        <div class="map-box">🗾</div>
+        <div class="venue-card">
+          <div class="vc-name">🏛️ アートスペース兜座</div>
+          <div class="vc-addr">中央区日本橋兜町11-10</div>
+        </div>
+      </div>
+      <div class="phone-nav">
+        <div class="pn-tab"><div class="pni">🏠</div>今日</div>
+        <div class="pn-tab"><div class="pni">📋</div>演芸会</div>
+        <div class="pn-tab camera"><div class="pni">📷</div>チラシ</div>
+        <div class="pn-tab active"><div class="pni">📍</div>会場</div>
+        <div class="pn-tab"><div class="pni">👤</div>アカウント</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="badge" style="margin-top:14px;">会場詳細</div>
+  <div class="phone-wrap" style="margin-top:8px;">
+    <div class="phone">
+      <div class="phone-header">
+        <span class="ph-logo">演芸日記</span>
+        <div class="ph-actions" style="font-size:10px; color:var(--orange);">共有</div>
+      </div>
+      <div class="phone-body">
+        <div class="ph-title" style="font-size:13px;">アートスペース兜座</div>
+        <div class="map-box" style="height:90px;">🗾</div>
+        <div style="font-size:10px; font-weight:700; margin-bottom:6px;">詳細</div>
+        <div class="ph-label">会場名</div>
+        <div style="font-size:11px; font-weight:700; margin-bottom:8px;">アートスペース兜座</div>
+        <div class="ph-label">住所</div>
+        <div style="font-size:10px; margin-bottom:10px;">中央区日本橋兜町11-10 兜町中央ビル5F</div>
+        <div style="border:1px solid var(--orange); border-radius:7px; padding:7px; text-align:center; font-size:10px; font-weight:700; color:var(--orange);">近くの会場一覧</div>
+      </div>
+      <div class="phone-nav">
+        <div class="pn-tab"><div class="pni">🏠</div>今日</div>
+        <div class="pn-tab"><div class="pni">📋</div>演芸会</div>
+        <div class="pn-tab camera"><div class="pni">📷</div>チラシ</div>
+        <div class="pn-tab active"><div class="pni">📍</div>会場</div>
+        <div class="pn-tab"><div class="pni">👤</div>アカウント</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="exp-card" style="margin-top:12px;">
+    <h3>📖 この画面でできること</h3>
+    <ul class="steps">
+      <li>地図上にピンで会場の位置が表示され、下部にリストが並びます。</li>
+      <li>会場をタップすると詳細ページに移動し、地図・会場名・住所を確認できます。</li>
+      <li>「近くの会場一覧」ボタンで周辺の関連会場も探せます。</li>
+    </ul>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ======== SEC 5: ACCOUNT ======== -->
+<section id="account" class="guide">
+  <div class="section-header">
+    <div class="sh-icon">👤</div>
+    <div class="sh-text">
+      <h2>アカウント・プロフィール</h2>
+      <p>egn.our-map.jp/profile　／　ボトムナビ「アカウント」</p>
+    </div>
+  </div>
+
+  <div class="badge">アカウントメニュー</div>
+  <div class="phone-wrap" style="margin-top:8px;">
+    <div class="phone">
+      <div class="phone-header"><span class="ph-logo">演芸日記</span></div>
+      <div class="phone-body">
+        <div class="ph-title" style="font-size:13px; margin-bottom:12px;">伊藤</div>
+        <ul class="acct-menu">
+          <li><span>👤</span> プロフィール</li>
+          <li><span>🔒</span> プライバシーポリシー</li>
+          <li><span>✉️</span> お問合せ</li>
+          <li><span>🚪</span> ログアウト</li>
+        </ul>
+      </div>
+      <div class="phone-nav">
+        <div class="pn-tab"><div class="pni">🏠</div>今日</div>
+        <div class="pn-tab"><div class="pni">📋</div>演芸会</div>
+        <div class="pn-tab camera"><div class="pni">📷</div>チラシ</div>
+        <div class="pn-tab"><div class="pni">📍</div>会場</div>
+        <div class="pn-tab active"><div class="pni">👤</div>アカウント</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="badge" style="margin-top:14px;">プロフィール設定</div>
+  <div class="phone-wrap" style="margin-top:8px;">
+    <div class="phone">
+      <div class="phone-header"><span class="ph-logo">演芸日記</span></div>
+      <div class="phone-body">
+        <div class="ph-title" style="font-size:13px;">プロフィール設定</div>
+        <div class="profile-row">
+          <div class="p-avatar">伊</div>
+          <div>
+            <div class="p-name">伊藤</div>
+            <div class="p-email">master@our-map.jp</div>
+            <div class="p-email">一般　アイコンをタップして変更</div>
+          </div>
+        </div>
+
+        <div style="font-size:9px; color:var(--ink-soft); margin-bottom:6px; font-weight:700;">アカウント情報</div>
+        <div class="ph-label">表示名</div>
+        <div class="ph-field v" style="margin-bottom:6px;">伊藤</div>
+        <div class="ph-label">メールアドレス</div>
+        <div class="ph-field v" style="margin-bottom:8px;">master@our-map.jp</div>
+
+        <div style="font-size:9px; color:var(--ink-soft); margin-bottom:6px; font-weight:700;">予約情報</div>
+        <div class="ph-label">氏名</div>
+        <div class="ph-field" style="margin-bottom:6px; color:var(--ink-soft); font-size:9px;">例：山田太郎</div>
+        <div class="ph-label">電話番号</div>
+        <div class="ph-field" style="margin-bottom:8px; color:var(--ink-soft); font-size:9px;">例：090-1234-5678</div>
+
+        <div style="font-size:9px; color:var(--ink-soft); margin-bottom:6px; font-weight:700;">好み</div>
+        <div class="ph-label">好きなジャンル</div>
+        <div class="genre-row">
+          <span class="g-chip on">✓ 落語</span>
+          <span class="g-chip">講談</span>
+          <span class="g-chip">浪曲</span>
+          <span class="g-chip">その他</span>
+        </div>
+        <div class="ph-label">好きな演者（最大5名）</div>
+        <div class="ph-field" style="margin-bottom:4px; color:var(--ink-soft); font-size:9px;">演者 1</div>
+        <div class="ph-field" style="color:var(--ink-soft); font-size:9px;">演者 2</div>
+
+        <div class="ph-save" style="margin-top:10px;">保存する</div>
+      </div>
+      <div class="phone-nav">
+        <div class="pn-tab"><div class="pni">🏠</div>今日</div>
+        <div class="pn-tab"><div class="pni">📋</div>演芸会</div>
+        <div class="pn-tab camera"><div class="pni">📷</div>チラシ</div>
+        <div class="pn-tab"><div class="pni">📍</div>会場</div>
+        <div class="pn-tab active"><div class="pni">👤</div>アカウント</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="exp-card" style="margin-top:12px;">
+    <h3>📖 設定できる項目</h3>
+    <ul class="steps">
+      <li><strong>表示名</strong>：アプリ内に表示される名前（ニックネームや本名）を設定します。</li>
+      <li><strong>アイコン</strong>：プロフィール画像をタップして変更できます。</li>
+      <li><strong>予約情報（氏名・電話番号）</strong>：会場への問合せや予約時に自動入力されます。あらかじめ登録しておくと便利です。</li>
+      <li><strong>好きなジャンル</strong>：落語・講談・浪曲・その他から複数選択できます。</li>
+      <li><strong>好きな演者</strong>：最大5名まで登録できます。</li>
+      <li>変更後は必ず下部の「<strong>保存する</strong>」をタップしてください。</li>
+    </ul>
+    <div class="callout">
+      <strong>ログアウトするには：</strong>ボトムナビ「アカウント」→ メニューの「ログアウト」をタップします。共用端末を使う際はお忘れなく。
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ======== SEC 6: REGISTER ======== -->
+<div class="reg-section" id="register">
+  <div class="badge">Sign-Up</div>
+  <h2>新規登録の流れ</h2>
+  <p class="reg-sub">アカウントをお持ちでない方は、メールアドレスを入力するだけで登録を始められます。<strong>本ガイドで取り扱うのは「メール送信ボタン押下までの操作」</strong>です。送信後の確認メール対応はサイト側のフローに沿って進めてください。</p>
+
+  <div class="step-title">STEP 1：ログインページから「新規登録はこちら」を選ぶ</div>
+  <div class="form-card">
+    <div style="font-size:9px; color:var(--ink-soft); margin-bottom:9px;">https://egn.our-map.jp/login</div>
+    <h5>ログイン</h5>
+    <p class="fc-desc">セッションで認証します。</p>
+    <div class="fc-lbl">ユーザー名またはメールアドレス</div>
+    <div class="fc-inp"></div>
+    <div class="fc-lbl">パスワード</div>
+    <div class="fc-inp"></div>
+    <div class="fc-btn">ログイン</div>
+    <div class="fc-alt">
+      アカウントをお持ちでない場合<br>
+      <a href="#">▶ 新規登録はこちら</a>
+      　／
+      <a href="#">パスワードを忘れた方はこちら</a>
+    </div>
+  </div>
+
+  <div class="step-title">STEP 2：メールアドレスを入力する</div>
+  <div class="form-card">
+    <div style="font-size:9px; color:var(--ink-soft); margin-bottom:9px;">https://egn.our-map.jp/register</div>
+    <h5>新規登録</h5>
+    <p class="fc-desc">メールアドレスを入力すると確認メールをお送りします。</p>
+    <div class="fc-lbl">メールアドレス</div>
+    <div class="fc-inp v">（登録するメールアドレス）</div>
+    <div class="fc-btn">確認メールを送る</div>
+    <div class="fc-alt">すでにアカウントをお持ちの方は <a href="#">ログイン</a></div>
+  </div>
+  <ul class="steps" style="margin-bottom:14px;">
+    <li>ログイン画面の <strong>「新規登録はこちら」</strong> をタップ。</li>
+    <li>メールアドレス欄に登録に使うアドレスを入力。</li>
+    <li><strong>「確認メールを送る」</strong> ボタンをタップ。</li>
+  </ul>
+
+  <div class="step-title">STEP 3：送信完了画面を確認する</div>
+  <div class="form-card">
+    <h5>確認メールを送信しました</h5>
+    <p class="fc-desc">入力したメールアドレス宛に確認メールを送信しました。</p>
+    <p style="font-size:11px; color:var(--ink-soft); margin-bottom:7px;">メール内のリンクをクリックして、ユーザー名とパスワードを設定してください。</p>
+    <p style="font-size:10px; color:var(--ink-soft);">※メールが届かない場合は迷惑メールフォルダをご確認ください。リンクの有効期限は24時間です。</p>
+    <div class="fc-alt" style="margin-top:9px;"><a href="#">▶ ログイン画面へ</a></div>
+  </div>
+
+  <div class="step-title">STEP 4：届いた確認メールのリンクをクリック</div>
+  <p style="font-size:12px; color:var(--ink-soft); margin-bottom:10px; line-height:1.7;">入力したメールアドレス宛に「演芸日記 メールアドレス確認」という件名のメールが届きます。本文中の <strong>会員登録用URL</strong>（<code>https://egn.our-map.jp/verify-email?token=…</code>）をクリックしてください。</p>
+  <div class="callout">
+    <strong>届かないとき：</strong>迷惑メールフォルダを確認 → 1〜2分待ってもダメなら、ログイン画面の「パスワードを忘れた方はこちら」から再送可能です。リンクの有効期限は <strong>24時間</strong>。
+  </div>
+
+  <div class="step-title">STEP 5：ユーザー名とパスワードを設定する</div>
+  <div class="form-card">
+    <div style="font-size:9px; color:var(--ink-soft); margin-bottom:9px;">/verify-email?token=…</div>
+    <h5>ユーザー情報の登録</h5>
+    <p class="fc-desc">アカウントを作成します。</p>
+    <div class="fc-lbl">ユーザー名</div>
+    <div class="fc-inp v">いとう</div>
+    <div class="fc-lbl">パスワード（8文字以上）</div>
+    <div class="fc-inp">●●●●●●●●</div>
+    <div class="fc-lbl">パスワード（確認）</div>
+    <div class="fc-inp">●●●●●●●●</div>
+    <div class="fc-btn">登録する</div>
+  </div>
+  <ul class="steps" style="margin-bottom:10px;">
+    <li><strong>ユーザー名</strong>（半角英数字・記号）を決める。後でログインIDとして使われます。表示名は別途プロフィールから設定できるので、シンプルなIDでOKです。</li>
+    <li><strong>パスワード</strong>（8文字以上）を入力。</li>
+    <li><strong>パスワード（確認）</strong>に同じパスワードを再入力。</li>
+    <li><strong>「登録する」</strong>をタップするとアカウントが作成され、ログイン済みのトップページへ移動します。</li>
+  </ul>
+  <div class="callout">
+    <strong>セキュリティのヒント：</strong>パスワードは8文字以上に加え、<strong>英数字＋記号の組み合わせ</strong>を推奨。パスワード管理アプリ（1Password・Bitwarden・iCloudキーチェーンなど）への保存がおすすめです。
+  </div>
+
+  <div class="step-title">STEP 6：ログイン後、まずプロフィールを設定する</div>
+  <p style="font-size:12px; color:var(--ink-soft); margin-bottom:10px; line-height:1.7;">登録直後はアバターも空、表示名もユーザーIDのままです。ボトムナビ「アカウント」→「プロフィール」から、最低限の3つだけでも整えておくと使いやすくなります。</p>
+  <ul class="steps">
+    <li><strong>表示名</strong>：本名や好きなニックネームを入力。</li>
+    <li><strong>好きなジャンル</strong>：落語・講談・浪曲・その他から1つ以上チェック。</li>
+    <li>会場予約をメールで取りたい場合は <strong>「予約情報」の氏名・電話番号</strong>も入力しておく。</li>
+    <li>下部の <strong>「保存する」</strong> をタップして完了。</li>
+  </ul>
+</div>
+
+<footer>
+  演芸日記 使い方ガイド（モバイル版）v2.0 ／ Generated with Claude<br>
+  本書は egn.our-map.jp の実際のモバイル画面スクリーンショット（2026年5月2日撮影）をもとに作成しています。<br>
+  対象アカウント：master@our-map.jp
+</footer>
+
+</body>
+</html>
