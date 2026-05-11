@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>演芸日記 — 良い演芸会だった</title>
+  <meta name="description" content="落語・浪曲・講談。あの夜の熱を、記録する。演芸日記は、演芸好きのための演芸記録アプリです。">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400;700&display=swap');
+
+    :root {
+      --paper:      #f4efe5;
+      --paper2:     #ede7d8;
+      --paper3:     #e4dcc8;
+      --ink:        #1c1208;
+      --ink-mid:    #4a3820;
+      --ink-soft:   #8a7358;
+      --ink-faint:  #c4b89e;
+      --red:        #9e2a1c;
+      --red-bright: #c0392b;
+      --gold:       #8a6f2e;
+      --gold-mid:   #b8962e;
+      --rule:       #d0c4a8;
+      --rule-dark:  #b0a488;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: "Noto Serif JP", "Yu Mincho", "YuMincho", "Hiragino Mincho ProN", serif;
+      background: var(--paper);
+      color: var(--ink);
+      line-height: 1.8;
+      overflow-x: hidden;
+    }
+
+    /* 和紙テクスチャ（薄い格子） */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        repeating-linear-gradient(0deg,   transparent, transparent 39px, rgba(0,0,0,.04) 40px),
+        repeating-linear-gradient(90deg,  transparent, transparent 39px, rgba(0,0,0,.04) 40px);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ── 朱色トップライン ── */
+    .top-bar {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: 4px;
+      background: var(--red);
+      z-index: 100;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 4px; left: 0; right: 0;
+      padding: 16px 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      z-index: 99;
+      background: linear-gradient(to bottom, rgba(244,239,229,.95), rgba(244,239,229,0));
+    }
+    .nav-logo {
+      font-size: 16px;
+      letter-spacing: .28em;
+      color: var(--ink);
+      text-decoration: none;
+    }
+    .nav-cta {
+      font-family: "Hiragino Sans", sans-serif;
+      font-size: 12px;
+      letter-spacing: .12em;
+      color: var(--paper);
+      background: var(--red);
+      text-decoration: none;
+      padding: 7px 22px;
+      transition: background .25s;
+    }
+    .nav-cta:hover { background: var(--red-bright); }
+
+    /* ── HERO ── */
+    .hero {
+      position: relative;
+      z-index: 1;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 130px 32px 100px;
+      overflow: hidden;
+    }
+
+    /* 左右の縦飾り線 */
+    .hero::before,
+    .hero::after {
+      content: '';
+      position: absolute;
+      top: 80px; bottom: 80px;
+      width: 1px;
+      background: linear-gradient(to bottom, transparent, var(--rule-dark) 25%, var(--rule-dark) 75%, transparent);
+    }
+    .hero::before { left: 56px; }
+    .hero::after  { right: 56px; }
+
+    /* 家紋ふうの丸 */
+    .kamon {
+      width: 56px; height: 56px;
+      border: 1px solid var(--rule-dark);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 32px;
+      position: relative;
+    }
+    .kamon::before {
+      content: '';
+      position: absolute;
+      inset: 7px;
+      border: 1px solid var(--rule-dark);
+      border-radius: 50%;
+    }
+    .kamon-dot {
+      width: 14px; height: 14px;
+      background: var(--red);
+      border-radius: 50%;
+    }
+
+    .hero-label {
+      font-family: "Hiragino Sans", sans-serif;
+      font-size: 10px;
+      letter-spacing: .5em;
+      color: var(--ink-soft);
+      margin-bottom: 40px;
+    }
+
+    .hero-catch {
+      font-size: clamp(34px, 6.5vw, 68px);
+      font-weight: 300;
+      letter-spacing: .08em;
+      color: var(--ink);
+      line-height: 1.35;
+    }
+    .hero-ellipsis {
+      font-size: clamp(34px, 6.5vw, 68px);
+      font-weight: 700;
+      color: var(--red);
+      letter-spacing: .25em;
+      margin-top: 4px;
+    }
+
+    .hero-rule {
+      width: 1px;
+      height: 52px;
+      background: linear-gradient(to bottom, var(--red), var(--rule));
+      margin: 36px auto;
+    }
+
+    .hero-sub {
+      font-family: "Hiragino Sans", sans-serif;
+      font-size: 14px;
+      letter-spacing: .18em;
+      color: var(--ink-soft);
+      line-height: 2.2;
+      margin-bottom: 52px;
+    }
+
+    .hero-btn {
+      display: inline-block;
+      font-family: "Hiragino Sans", sans-serif;
+      font-size: 13px;
+      letter-spacing: .22em;
+      color: var(--paper);
+      background: var(--red);
+      padding: 16px 52px;
+      text-decoration: none;
+      transition: background .25s;
+    }
+    .hero-btn:hover { background: var(--red-bright); }
+
+    .hero-scroll {
+      position: absolute;
+      bottom: 36px; left: 50%;
+      transform: translateX(-50%);
+      font-family: "Hiragino Sans", sans-serif;
+      font-size: 9px;
+      letter-spacing: .3em;
+      color: var(--ink-faint);
+      display: flex; flex-direction: column; align-items: center; gap: 10px;
+    }
+    .hero-scroll::after {
+      content: '';
+      width: 1px; height: 36px;
+      background: linear-gradient(to bottom, var(--rule-dark), transparent);
+      animation: pulse 2s ease-in-out infinite;
+    }
+    @keyframes pulse { 0%,100%{opacity:.3} 50%{opacity:1} }
+
+    /* ── 区切り ── */
+    .sep {
+      position: relative; z-index: 1;
+      display: flex; align-items: center; gap: 20px;
+      padding: 0 48px;
+    }
+    .sep-line { flex: 1; height: 1px; background: var(--rule); }
+    .sep-diamond {
+      width: 7px; height: 7px;
+      background: var(--red);
+      transform: rotate(45deg);
+      flex-shrink: 0;
+    }
+
+    /* ── ABOUT ── */
+    .about {
+      position: relative; z-index: 1;
+      padding: 100px 40px;
+      max-width: 760px; margin: 0 auto;
+      text-align: center;
+    }
+    .sec-label {
+      font-family: "Hiragino Sans", sans-serif;
+      font-size: 10px;
+      letter-spacing: .5em;
+      color: var(--red);
+      margin-bottom: 36px;
+    }
+    .about-text {
+      font-size: clamp(17px, 2.2vw, 22px);
+      font-weight: 300;
+      line-height: 2.2;
+      color: var(--ink-mid);
+      letter-spacing: .06em;
+    }
+    .about-text strong { font-weight: 700; color: var(--ink); }
+
+    /* ── FEATURES ── */
+    .features {
+      position: relative; z-index: 1;
+      background: var(--paper2);
+      border-top: 1px solid var(--rule);
+      border-bottom: 1px solid var(--rule);
+      padding: 80px 40px;
+    }
+    .features-inner { max-width: 960px; margin: 0 auto; }
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1px;
+      background: var(--rule);
+      border: 1px solid var(--rule);
+      margin-top: 48px;
+    }
+    .feat {
+      background: var(--paper2);
+      padding: 48px 34px;
+      transition: background .25s;
+    }
+    .feat:hover { background: var(--paper3); }
+    .feat-num {
+      font-family: "Hiragino Sans", sans-serif;
+      font-size: 10px; letter-spacing: .3em;
+      color: var(--red);
+      margin-bottom: 24px;
+      display: flex; align-items: center; gap: 12px;
+    }
+    .feat-num::after {
+      content: ''; flex: 1; height: 1px;
+      background: var(--rule); max-width: 36px;
+    }
+    .feat h2 {
+      font-size: 19px; font-weight: 700;
+      letter-spacing: .08em; color: var(--ink);
+      margin-bottom: 14px;
+    }
+    .feat p {
+      font-family: "Hiragino Sans", sans-serif;
+      font-size: 13px; line-height: 2;
+      color: var(--ink-soft); letter-spacing: .04em;
+    }
+
+    /* ── QUOTE ── */
+    .quote-wrap {
+      position: relative; z-index: 1;
+      padding: 110px 40px;
+      text-align: center;
+      overflow: hidden;
+    }
+    .quote-wrap::before {
+      content: '芸';
+      position: absolute;
+      font-size: 300px; font-weight: 700;
+      color: rgba(0,0,0,.04);
+      top: 50%; left: 50%;
+      transform: translate(-50%,-50%);
+      pointer-events: none; line-height: 1;
+    }
+    .quote-text {
+      font-size: clamp(19px, 2.8vw, 28px);
+      font-weight: 300; letter-spacing: .1em;
+      color: var(--ink-mid); line-height: 2.4;
+      position: relative;
+    }
+    .quote-text strong { font-weight: 700; color: var(--ink); }
+    .quote-rule {
+      width: 36px; height: 2px;
+      background: var(--red);
+      margin: 44px auto;
+    }
+    .quote-attr {
+      font-family: "Hiragino Sans", sans-serif;
+      font-size: 10px; letter-spacing: .35em;
+      color: var(--ink-faint);
+    }
+
+    /* ── HOW ── */
+    .how {
+      position: relative; z-index: 1;
+      background: var(--paper2);
+      border-top: 1px solid var(--rule);
+      border-bottom: 1px solid var(--rule);
+      padding: 80px 40px;
+    }
+    .how-inner { max-width: 760px; margin: 0 auto; }
+    .how-steps { margin-top: 48px; }
+    .how-step {
+      display: flex; gap: 32px; align-items: flex-start;
+      padding: 32px 0;
+      border-bottom: 1px solid var(--rule);
+    }
+    .how-step:first-child { border-top: 1px solid var(--rule); }
+    .how-step-num {
+      font-family: "Hiragino Sans", sans-serif;
+      font-size: 10px; letter-spacing: .2em;
+      color: var(--red); flex-shrink: 0;
+      padding-top: 4px; width: 52px;
+    }
+    .how-step h3 {
+      font-size: 17px; font-weight: 700;
+      letter-spacing: .06em; color: var(--ink);
+      margin-bottom: 8px;
+    }
+    .how-step p {
+      font-family: "Hiragino Sans", sans-serif;
+      font-size: 13px; line-height: 2;
+      color: var(--ink-soft); letter-spacing: .04em;
+    }
+
+    /* ── CTA ── */
+    .cta {
+      position: relative; z-index: 1;
+      padding: 110px 40px;
+      text-align: center;
+    }
+    .cta-catch {
+      font-size: clamp(24px, 3.5vw, 42px);
+      font-weight: 300; letter-spacing: .1em;
+      color: var(--ink); line-height: 1.8;
+      margin-bottom: 14px;
+    }
+    .cta-sub {
+      font-family: "Hiragino Sans", sans-serif;
+      font-size: 13px; letter-spacing: .14em;
+      color: var(--ink-soft); line-height: 2.2;
+      margin-bottom: 48px;
+    }
+    .cta-btn {
+      display: inline-block;
+      font-family: "Hiragino Sans", sans-serif;
+      font-size: 14px; letter-spacing: .22em;
+      color: var(--paper);
+      background: var(--red);
+      padding: 18px 64px;
+      text-decoration: none;
+      transition: background .25s;
+    }
+    .cta-btn:hover { background: var(--red-bright); }
+    .cta-note {
+      margin-top: 22px;
+      font-family: "Hiragino Sans", sans-serif;
+      font-size: 11px; letter-spacing: .1em;
+      color: var(--ink-faint);
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      position: relative; z-index: 1;
+      background: var(--paper3);
+      border-top: 2px solid var(--red);
+      padding: 44px 40px;
+      display: flex; align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap; gap: 16px;
+    }
+    .footer-logo {
+      font-size: 16px; letter-spacing: .28em; color: var(--ink);
+    }
+    .footer-links { display: flex; gap: 24px; }
+    .footer-links a {
+      font-family: "Hiragino Sans", sans-serif;
+      font-size: 11px; letter-spacing: .1em;
+      color: var(--ink-soft); text-decoration: none;
+      transition: color .25s;
+    }
+    .footer-links a:hover { color: var(--red); }
+    .footer-copy {
+      font-family: "Hiragino Sans", sans-serif;
+      font-size: 10px; letter-spacing: .12em; color: var(--ink-faint);
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 640px) {
+      nav { padding: 14px 20px; }
+      .hero::before, .hero::after { display: none; }
+      .about { padding: 72px 24px; }
+      .features, .how { padding: 60px 24px; }
+      .quote-wrap { padding: 80px 24px; }
+      .cta { padding: 80px 24px; }
+      footer { padding: 36px 24px; flex-direction: column; align-items: flex-start; }
+      .sep { padding: 0 24px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="top-bar"></div>
+
+  <nav>
+    <span class="nav-logo">演芸日記</span>
+    <a href="https://egn.our-map.jp" class="nav-cta">無料で始める</a>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="kamon"><div class="kamon-dot"></div></div>
+
+    <p class="hero-label">演芸記録アプリ　ENGEI NIKKI</p>
+
+    <h1>
+      <div class="hero-catch">良い演芸会だった</div>
+    </h1>
+
+    <div class="hero-rule"></div>
+
+    <p class="hero-sub">
+      落語、浪曲、講談。<br>
+      あの夜の熱を、記録する。
+    </p>
+
+    <a href="https://egn.our-map.jp" class="hero-btn">今すぐ記録を始める</a>
+
+    <div class="hero-scroll">SCROLL</div>
+  </section>
+
+  <div class="sep"><div class="sep-line"></div><div class="sep-diamond"></div><div class="sep-line"></div></div>
+
+  <!-- ABOUT -->
+  <section class="about">
+    <p class="sec-label">ABOUT</p>
+    <p class="about-text">
+      高座を降りれば、記憶は薄れていく。<br>
+      <strong>演芸日記</strong>は、演芸好きのための演芸記録アプリです。<br>
+      チラシを撮るだけで、あの夜を残せる。
+    </p>
+  </section>
+
+  <div class="sep"><div class="sep-line"></div><div class="sep-diamond"></div><div class="sep-line"></div></div>
+
+  <!-- FEATURES -->
+  <section class="features">
+    <div class="features-inner">
+      <p class="sec-label" style="text-align:center;">FEATURES</p>
+      <div class="features-grid">
+
+        <div class="feat">
+          <div class="feat-num">01</div>
+          <h2>チラシを撮るだけ</h2>
+          <p>チラシの写真やPDFをアップロードするだけ。日付・会場・出演者・料金が自動で入力されます。手間なく、記録が始まる。</p>
+        </div>
+
+        <div class="feat">
+          <div class="feat-num">02</div>
+          <h2>演芸日記を残す</h2>
+          <p>感想・演目・出演者をまとめて記録。あの高座の熱量を、言葉に変えて残しておけます。写真も最大5枚まで追加可能。</p>
+        </div>
+
+        <div class="feat">
+          <div class="feat-num">03</div>
+          <h2>会場マップで探す</h2>
+          <p>地図から周辺の演芸会場を確認。次の演芸会を見つけるのも、思い出の会場を振り返るのも、指一本で。</p>
+        </div>
+
+        <div class="feat">
+          <div class="feat-num">04</div>
+          <h2>スケジュールを管理する</h2>
+          <p>カレンダーで今月・来月の演芸会予定を一望。行く予定・予約済みを整理して、見逃しのない演芸ライフを。</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- QUOTE -->
+  <section class="quote-wrap">
+    <p class="quote-text">
+      記録しておかないと、<strong>忘れてしまう。</strong><br>
+      でも覚えているうちに書けば、<br>
+      <strong>ずっと残る。</strong>
+    </p>
+    <div class="quote-rule"></div>
+    <p class="quote-attr">演芸日記　ENGEI NIKKI</p>
+  </section>
+
+  <div class="sep"><div class="sep-line"></div><div class="sep-diamond"></div><div class="sep-line"></div></div>
+
+  <!-- HOW -->
+  <section class="how">
+    <div class="how-inner">
+      <p class="sec-label">HOW IT WORKS</p>
+      <div class="how-steps">
+
+        <div class="how-step">
+          <div class="how-step-num">STEP 01</div>
+          <div>
+            <h3>無料登録する</h3>
+            <p>メールアドレスだけで登録できます。登録後すぐに使い始められます。</p>
+          </div>
+        </div>
+
+        <div class="how-step">
+          <div class="how-step-num">STEP 02</div>
+          <div>
+            <h3>チラシを取り込む</h3>
+            <p>演芸会のチラシ画像やPDFを選択して「解析する」をタップ。情報が自動入力されます。</p>
+          </div>
+        </div>
+
+        <div class="how-step">
+          <div class="how-step-num">STEP 03</div>
+          <div>
+            <h3>感想を書いて保存する</h3>
+            <p>観劇後に感想・演目・出演者を加えて保存。あの夜の記録が、手元に残ります。</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta">
+    <p class="cta-catch">
+      良い演芸会だった、<br>
+      その気持ちを残そう。
+    </p>
+    <p class="cta-sub">
+      落語・浪曲・講談・その他の話芸、すべての記録に。<br>
+      登録は無料、スマートフォンからすぐに始められます。
+    </p>
+    <a href="https://egn.our-map.jp" class="cta-btn">演芸日記を始める</a>
+    <p class="cta-note">無料 ／ 登録所要時間 約1分</p>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <span class="footer-logo">演芸日記</span>
+    <div class="footer-links">
+      <a href="https://egn.our-map.jp">アプリを開く</a>
+      <a href="https://egn.our-map.jp/profile">プロフィール</a>
+    </div>
+    <span class="footer-copy">&copy; 2026 演芸日記</span>
+  </footer>
+
+</body>
+</html>
